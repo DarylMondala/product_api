@@ -1,0 +1,8 @@
+-- CreateTable
+CREATE TABLE `access_token` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `token` VARCHAR(50) NOT NULL,
+    `expiry` VARCHAR(50) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
