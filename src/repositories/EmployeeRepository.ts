@@ -1,3 +1,4 @@
+import { employee } from '@prisma/client';
 import prisma from '../db';
 import Employee from '../models/employee';
 
@@ -23,4 +24,46 @@ static addEmployee = async (userData:Employee) => {
     });
     return getoneEmployee
   }
+  static updateEmployee = async (userData: employee)=>{
+    try{
+      const updateLabel = await prisma.employee.update({
+        where: {
+          id: userData.id,
+        },
+        data: {
+          employee_id: userData.employee_id,
+          company_id: userData.company_id
+        },
+      });
+      return updateLabel;
+    }catch(error){
+      throw String(error || 'Unknown error occurred.');
+    }
+  }
+  static deleteEmployee = async (id:number) => {
+    try {
+      const deleteEmployee = await prisma.company.delete({
+        where:{
+          id:id
+        }
+      })
+      return deleteEmployee;
+    } catch (error) {
+      throw String(error || 'Unknown error occurred.');
+    }
+  }
+  static createemployee = async (userData: employee) => {
+    try {
+          await prisma.employee.create({
+            data: {
+              id: userData.id,
+              employee_id: userData.employee_id,
+              company_id: userData.company_id,
+            },
+          });
+        }
+     catch (error) {
+      throw String(error || 'Unknown error occurred.');
+    }
+  };
 }

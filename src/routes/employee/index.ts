@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from "fastify";
 import { IEmployeeRequestBody, IEmployeeResponseError, IEmployeeResponseSucessful } from "../../schemas/EmployeeSchemas";
-import { addemployeeHandler, getEmployeeHandler } from "../../controllers/EmployeeControllers";
+import { addemployeeHandler, deleteEmployeeHandler, getEmployeeHandler, updateEmployeeHandler } from "../../controllers/EmployeeControllers";
 
 const employee: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     fastify.post<{
@@ -12,5 +12,15 @@ const employee: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         Querystring: IEmployeeRequestBody;
         Reply: IEmployeeResponseSucessful | IEmployeeResponseError;
       }>('/', getEmployeeHandler);
+
+      fastify.put<{
+        Querystring: IEmployeeRequestBody;
+        Reply: IEmployeeResponseSucessful | IEmployeeResponseError;
+      }>('/', updateEmployeeHandler);
+
+      fastify.delete<{
+        Querystring: IEmployeeRequestBody;
+        Reply: IEmployeeResponseSucessful | IEmployeeResponseError;
+      }>('/', deleteEmployeeHandler);
 };
 export default employee;

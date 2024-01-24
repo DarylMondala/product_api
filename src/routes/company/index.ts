@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from "fastify";
 import { ICOmpanyResponseError, ICompanyRequestBody, ICompanyResponseSucessful } from "../../schemas/CompanySchemas";
-import { addcompanyHandler, getCompanyHandler } from "../../controllers/CompanyControllers";
+import { addcompanyHandler, deleteCompanyHandler, getCompanyHandler, updateCompanyHandler } from "../../controllers/CompanyControllers";
 
 
 
@@ -14,5 +14,15 @@ const company: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       Querystring: ICompanyRequestBody;
       Reply: ICompanyResponseSucessful | ICOmpanyResponseError;
     }>('/', getCompanyHandler);
+
+    fastify.put<{
+      Querystring: ICompanyRequestBody;
+      Reply: ICompanyResponseSucessful | ICOmpanyResponseError;
+    }>('/', updateCompanyHandler);
+
+    fastify.delete<{
+      Querystring: ICompanyRequestBody;
+      Reply: ICompanyResponseSucessful | ICOmpanyResponseError;
+    }>('/', deleteCompanyHandler);
 };
 export default company;

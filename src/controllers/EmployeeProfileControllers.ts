@@ -1,59 +1,61 @@
-
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { IEmployeeRequestBody } from '../schemas/EmployeeSchemas';
-import EmployeeRepository from '../repositories/EmployeeRepository';
+import { IEmployeeProfileRequestBody } from '../schemas/EmployeeProfileSchemas';
+import EmployeeProfileRepository from '../repositories/EmployeeProfileRepository';
 
-export const addemployeeHandler = async (
+export const addemployeeprofileHandler = async (
     request: FastifyRequest,
     reply: FastifyReply
   ) => {
-    const requestBody = request.body as IEmployeeRequestBody;
+    const requestBody = request.body as IEmployeeProfileRequestBody;
   
     if (
       !requestBody ||
+      !requestBody.employee_name ||
+      !requestBody.position ||
+      !requestBody.salary ||
       !requestBody.employee_id ||
-      !requestBody.company_id ||
       !requestBody
     ) {
       return reply.badRequest(
-        `Invalid request body. Required fields: 'employee_id', company_id`
+        `Invalid request body. Required fields: 'employee_name', 'position', 'salary', 'employee_id'`
          );
     }
     try {
-     const addEmployee = await EmployeeRepository.addEmployee({
+     const addEmployeeProfile = await EmployeeProfileRepository.addEmployeeProfile({
+            employee_name: requestBody.employee_name,
+            position: requestBody.position,
+            salary: requestBody.salary,
             employee_id: requestBody.employee_id,
-            company_id: requestBody.company_id,
         });
         return reply.send ({
-            data: addEmployee
+            data: addEmployeeProfile
         });
     }catch (error) {
         reply.internalServerError(String(error || 'Unknown error occurred.'));
     }
   };
-
-  export const getEmployeeHandler = async (
+  export const readAllemployeeprofileHandler = async (
     request: FastifyRequest,
     reply: FastifyReply
   ) => {
     try {
-        const getEmployee = await EmployeeRepository.getEmployee();
+        const targetLabels = await EmployeeProfileRepository.viewEmployeeProfile();
       
         return reply.send ({
-            labels: getEmployee
+            labels: targetLabels
         });
     } catch (error) {
-        console.error (`GetEmployeeHandler:error trying to read labels: ${error}`);
+        console.error (`GetEmployeeProfileHandler:error trying to read labels: ${error}`);
         reply.internalServerError(String(error || 'Unknown error occurred.'));
     }
   };
-  export const updateEmployeeHandler = async (
+  export const updateEmployeeProfileHandler = async (
     request: FastifyRequest,
     reply: FastifyReply
   ) => {
     try {
-      const query = request.body as IEmployeeRequestBody;
-      const targetLabel = await EmployeeRepository.updateEmployee(query);
+      const query = request.body as IEmployeeProfileRequestBody;
+      const targetLabel = await EmployeeProfileRepository.updateEmployeeProfile(query);
       return reply.send(targetLabel);
   
     } catch (error) {
@@ -61,19 +63,20 @@ export const addemployeeHandler = async (
       reply.internalServerError(String(error || 'Unknown error occurred.'));
     }
   };
-  export const deleteEmployeeHandler = async (
+  export const deleteEmployeeProfileHandler = async (
     request: FastifyRequest,
     reply: FastifyReply
   ) => {
     try {
-      const requestParams = request.params as IEmployeeRequestBody;
+      const requestParams = request.params as IEmployeeProfileRequestBody;
       requestParams.id = Number(requestParams.id);
       if (!requestParams || !requestParams.id) {
         return reply.badRequest(
           "Missing or invalid request body. Required fields: 'id'"
         );
       }
-      await EmployeeRepository.deleteEmployee(requestParams.id);
+  
+      await EmployeeProfileRepository.deleteEmployeeProfile(requestParams.id);
   
       return reply.send({
         message: 'Label has been removed successfully.',
@@ -84,3 +87,5 @@ export const addemployeeHandler = async (
       reply.internalServerError(JSON.stringify(error));
     }
   };
+
+ 
