@@ -23,7 +23,7 @@ const employeeprofile: FastifyPluginAsync = async (fastify, opts): Promise<void>
     fastify.delete<{
         Querystring: IEmployeeProfileRequestBody;
         Reply: IEmployeeProfileResponseSucessful | IEmployeeResponseError;
-    }>('/', deleteEmployeeProfileHandler);
+    }>('/:id', deleteEmployeeProfileHandler);
     
 };
 export default employeeprofile;

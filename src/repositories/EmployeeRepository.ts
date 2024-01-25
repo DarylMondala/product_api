@@ -42,7 +42,7 @@ static addEmployee = async (userData:Employee) => {
   }
   static deleteEmployee = async (id:number) => {
     try {
-      const deleteEmployee = await prisma.company.delete({
+      const deleteEmployee = await prisma.employee.delete({
         where:{
           id:id
         }

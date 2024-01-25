@@ -21,6 +21,6 @@ const employee: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       fastify.delete<{
         Querystring: IEmployeeRequestBody;
         Reply: IEmployeeResponseSucessful | IEmployeeResponseError;
-      }>('/', deleteEmployeeHandler);
+      }>('/:id', deleteEmployeeHandler);
 };
 export default employee;

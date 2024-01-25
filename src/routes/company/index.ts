@@ -23,6 +23,6 @@ const company: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     fastify.delete<{
       Querystring: ICompanyRequestBody;
       Reply: ICompanyResponseSucessful | ICOmpanyResponseError;
-    }>('/', deleteCompanyHandler);
+    }>('/:id', deleteCompanyHandler);
 };
 export default company;
